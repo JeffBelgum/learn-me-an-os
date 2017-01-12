@@ -1,7 +1,7 @@
 #![feature(lang_items)]
 #![no_std]
 
-#![no_mangle]
+#[no_mangle]
 pub extern fn rust_main() {}
 
 #[lang = "eh_personality"]
