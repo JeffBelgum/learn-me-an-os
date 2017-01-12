@@ -1,0 +1,7 @@
+[package]
+name = "learn_me_an_os"
+version = "0.1.0"
+authors = ["Jeff Belgum <jeffbelgum@gmail.com>"]
+
+[lib]
+crate-type = ["staticlib"]
