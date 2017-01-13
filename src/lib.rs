@@ -5,9 +5,22 @@ extern crate rlibc;
 
 #[no_mangle]
 pub extern fn rust_main() {
-    let x = ["Hello", "World", "!"];
-    let y = x;
-    let test = (0..3).flat_map(|x| 0..x).zip(0..);
+
+    let hello = b"Hello World!";
+    let color_byte = 0x1f; // fg white, bg blue
+
+    let mut hello_colored = [color_byte; 24];
+    for (i, char_byte) in hello.into_iter().enumerate() {
+        hello_colored[i * 2] = *char_byte;
+    }
+
+    // write message to the center of the VGA text buffer
+    let buffer_ptr = (0xb8000 + 1988) as *mut _;
+    unsafe {
+        *buffer_ptr = hello_colored;
+    }
+
+    loop {}
 }
 
 #[lang = "eh_personality"]
@@ -17,13 +30,11 @@ extern fn eh_personality() {
 #[lang = "panic_fmt"]
 #[no_mangle]
 pub extern fn panic_fmt() -> ! {
-    loop {
-    }
+    loop {}
 }
 
 #[allow(non_snake_case)]
 #[no_mangle]
 pub extern "C" fn _Unwind_Resume() -> ! {
-    loop {
-    }
+    loop {}
 }
