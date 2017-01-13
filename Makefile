@@ -9,6 +9,8 @@ grub_cfg := src/arch/$(arch)/grub.cfg
 assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
 assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
 	build/arch/$(arch)/%.o, $(assembly_source_files))
+rust_source_files := $(wildcard src/*.rs)
+cargo_file := Cargo.toml
 
 .PHONY: all clean run iso
 
@@ -31,10 +33,10 @@ $(iso): $(kernel) $(grub_cfg)
 	@rm -r build/isofiles
 
 $(kernel): cargo $(rust_os) $(assembly_object_files) $(linker_script)
-	@ld -n -T $(linker_script) -o $(kernel) \
+	@ld -n --gc-sections -T $(linker_script) -o $(kernel) \
 	  $(assembly_object_files) $(rust_os)
 
-cargo:
+cargo: $(rust_source_files) $(cargo_file)
 	@cargo build --target=$(target)
 
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
