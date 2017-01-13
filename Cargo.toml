@@ -5,14 +5,16 @@ version = "0.1.0"
 
 [dependencies]
 rlibc = "1.0.0"
+spin = "0.4.5"
+volatile = "0.2.1"
 
 [lib]
 crate-type = ["staticlib"]
 
-# The development profile, used for `cargo build`.
+[profile]
+
 [profile.dev]
 panic = "abort"
 
-# The release profile, used for `cargo build --release`.
 [profile.release]
 panic = "abort"
